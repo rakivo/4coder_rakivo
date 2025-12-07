@@ -450,6 +450,7 @@ typedef int socklen_t;
 #include "4coder_fleury_command_server.cpp"
 #endif
 #include "4coder_fleury_casey.cpp"
+#include "4coder_fleury_rakivo.cpp"
 #include "4coder_fleury_hooks.cpp"
 
 //~ NOTE(rjf): Plots Demo File
@@ -466,6 +467,7 @@ void custom_layer_init(Application_Links *app)
     global_frame_arena = make_arena(get_base_allocator_system());
     permanent_arena = make_arena(get_base_allocator_system());
     
+
     // NOTE(rjf): Set up hooks.
     {
         set_all_default_hooks(app);
@@ -562,6 +564,14 @@ CUSTOM_DOC("Fleury startup event")
         // NOTE(rjf): Open calc buffer.
         {
             Buffer_ID buffer = create_buffer(app, string_u8_litexpr("*calc*"),
+                                             BufferCreate_NeverAttachToFile |
+                                             BufferCreate_AlwaysNew);
+            buffer_set_setting(app, buffer, BufferSetting_Unimportant, true);
+        }
+
+        // NOTE(rakivo): Open scratch buffer.
+        {
+            Buffer_ID buffer = create_buffer(app, string_u8_litexpr("*scratch*"),
                                              BufferCreate_NeverAttachToFile |
                                              BufferCreate_AlwaysNew);
             buffer_set_setting(app, buffer, BufferSetting_Unimportant, true);
